@@ -11,7 +11,8 @@ PuppetLint.new_check(:parameter_documentation) do
       tokens[0..idx[:start]].reverse_each do |dtok|
         next if %i[CLASS DEFINE NEWLINE WHITESPACE INDENT].include?(dtok.type)
 
-        next unless dtok.type == :COMMENT
+        # only the comments directly above belong to this class or define
+        break unless dtok.type == :COMMENT
 
         if /\A\s*@api +private\s*$/.match?(dtok.value)
           is_private = true

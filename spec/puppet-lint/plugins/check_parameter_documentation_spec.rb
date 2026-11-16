@@ -184,6 +184,32 @@ describe 'parameter_documentation' do
     end
   end
 
+  context 'class following a documented private class' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Other class
+      #
+      # @api private
+      #
+      # @param foo example
+      class other($foo) { }
+
+      # Example class
+      #
+      # @param bar example
+      class example($foo, $bar) { }
+      EOS
+    end
+
+    it 'detects a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'creates a warning' do
+      expect(problems).to contain_warning(class_msg % :foo).on_line(10).in_column(15)
+    end
+  end
+
   context 'define missing documentation (@param bar) for a parameter' do
     let(:code) do
       <<-EOS.gsub(/^\s+/, '')
