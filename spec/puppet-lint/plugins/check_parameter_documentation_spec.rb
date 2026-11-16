@@ -66,6 +66,22 @@ describe 'parameter_documentation' do
     end
   end
 
+  context 'class with param defaults using a lambda' do
+    let(:code) { 'class example($foo = $bar.filter |$k, $v| { $v }, $baz = 1) { }' }
+
+    it 'detects two problems' do
+      expect(problems).to have(2).problems
+    end
+
+    it 'creates a warning for the first parameter' do
+      expect(problems).to contain_warning(class_msg % :foo).on_line(1).in_column(15)
+    end
+
+    it 'creates a warning for the second parameter' do
+      expect(problems).to contain_warning(class_msg % :baz).on_line(1).in_column(51)
+    end
+  end
+
   context 'class with many param defaults' do
     let(:code) do
       <<~EOS

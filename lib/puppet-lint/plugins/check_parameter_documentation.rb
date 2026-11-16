@@ -97,6 +97,7 @@ PuppetLint.new_check(:parameter_documentation) do
 
         params << ptok
         nesting = 0
+        in_lambda_params = false
         # skip to the next parameter to avoid finding default values of variables
         while true
           ptok = e.next
@@ -105,8 +106,10 @@ PuppetLint.new_check(:parameter_documentation) do
             nesting += 1
           when :RPAREN, :RBRACK, :RBRACE
             nesting -= 1
+          when :PIPE
+            in_lambda_params = !in_lambda_params
           when :COMMA
-            break unless nesting > 0
+            break unless nesting > 0 || in_lambda_params
           end
         end
       end
