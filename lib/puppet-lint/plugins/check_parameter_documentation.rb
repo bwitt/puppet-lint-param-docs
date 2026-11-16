@@ -124,7 +124,7 @@ PuppetLint.new_check(:parameter_documentation) do
       style = 'doc'
     when /\A\s*\$([a-zA-Z0-9_]+):: +(.*)\z/
       style = 'kafo'
-    when /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)(.*)\z/
+    when /\A\s*@param\s+(?:\[.+?\]\s+)?([a-zA-Z0-9_]+)(?:\s+|$)(.*)\z/
       style = 'strings'
     end
     [style, * $~]

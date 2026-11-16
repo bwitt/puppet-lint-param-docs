@@ -514,6 +514,23 @@ describe 'parameter_documentation' do
     end
   end
 
+  context 'class with all parameters documented with types and extra whitespace (@param)' do
+    let(:code) do
+      <<~EOS
+        # Example class
+        #
+        # @param [String] foo example, e.g. [default] value
+        # @param  [Optional[Array[String]]]  bar example
+        # @param	baz example
+        class example($foo, $bar, $baz) { }
+      EOS
+    end
+
+    it 'detects no problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
   context 'define with all parameters documented with defaults (@param)' do
     let(:code) do
       <<-EOS
