@@ -128,6 +128,31 @@ rdoc style.
 class example($foo) { }
 ```
 
+### Disabling the check
+
+Like any other puppet-lint check, it can be disabled on the command line:
+
+```
+puppet-lint --no-parameter_documentation-check manifests
+```
+
+To disable it for every run, including `pdk validate` and
+`pdk bundle exec puppet-lint`, add the same option to a `.puppet-lint.rc` file
+in the root of your module:
+
+```
+--no-parameter_documentation-check
+```
+
+When using the puppet-lint rake task, it can also be disabled in the `Rakefile`:
+
+```ruby
+PuppetLint.configuration.send('disable_parameter_documentation')
+```
+
+The `Gemfile` only controls which plugins are installed. Checks of an installed
+plugin can't be disabled there.
+
 ### Selective rake task
 
 The usual puppet-lint rake task checks all manifests, which isn't always
